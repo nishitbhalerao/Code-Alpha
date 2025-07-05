@@ -1,0 +1,12 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract MultiSend {
+    function sendEther(address[] calldata recipients) external payable {
+        uint share = msg.value / recipients.length;
+        for (uint i = 0; i < recipients.length; i++) {
+            (bool sent, ) = recipients[i].call{value: share}("");
+            require(sent, "Failed to send Ether");
+        }
+    }
+}
